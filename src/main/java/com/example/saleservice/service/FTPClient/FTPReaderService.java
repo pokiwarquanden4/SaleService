@@ -14,13 +14,13 @@ public class FTPReaderService {
     private String user = "admin";
     private String pass = "quang01239748392";
     private String remoteFilePath = "/SaleService/src/main/java/com/example/saleservice/constant/PNG/";
+    private FTPClient ftpClient = new FTPClient();
+    private InputStream inputStream;
     public InputStream Reader(String serial) {
-        remoteFilePath += serial + ".png";
-        FTPClient ftpClient = new FTPClient();
         try {
             ftpClient.connect(server, port);
             ftpClient.login(user, pass);
-            InputStream inputStream = ftpClient.retrieveFileStream(remoteFilePath);
+            inputStream = ftpClient.retrieveFileStream(remoteFilePath + serial + ".png");
             ftpClient.logout();
             ftpClient.disconnect();
             return inputStream;
