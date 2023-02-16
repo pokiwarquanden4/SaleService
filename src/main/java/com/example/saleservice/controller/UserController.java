@@ -3,6 +3,7 @@ package com.example.saleservice.controller;
 import com.example.saleservice.constant.URLConstance;
 import com.example.saleservice.entity.User;
 import com.example.saleservice.model.ResponseObject;
+import com.example.saleservice.model.ResponseUtils;
 import com.example.saleservice.service.FTPClient.FTPReaderService;
 import com.example.saleservice.service.RateLimit.RateLimitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,7 +122,7 @@ public class UserController {
 
         return base64String != null ?
                 ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(1, "Convert PNG Successfully", base64String)
+                        new ResponseObject(1, "Convert PNG Successfully", new ResponseUtils(base64String))
                 ):
                 ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                         new ResponseObject(0, "Convert PNG Failed", "")
