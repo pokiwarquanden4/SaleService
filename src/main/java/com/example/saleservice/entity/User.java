@@ -1,32 +1,29 @@
 package com.example.saleservice.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import java.util.Set;
 
-@Entity
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Entity
 @Table(name = "account")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private int ID;
+    private Long ID;
     @Column(name = "userName")
     private String userName;
     @Column(name = "passWord")
     private String passWord;
+    private String keylimit;
     @Column(name = "role")
     private String role;
 
-    public User(String userName, String passWord, String role) {
-        this.userName = userName;
-        this.passWord = passWord;
-        this.role = role;
+    public void getKeylimit(String keylimit) {
+        this.keylimit = keylimit;
     }
-
-
 }
