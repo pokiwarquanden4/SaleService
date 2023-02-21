@@ -21,15 +21,6 @@ public class SecurityConfig {
     @Bean
     //authentication
     public UserDetailsService userDetailsService() {
-//        UserDetails admin = User.withUsername("Basant")
-//                .password(encoder.encode("Pwd1"))
-//                .roles("ADMIN")
-//                .build();
-//        UserDetails user = User.withUsername("John")
-//                .password(encoder.encode("Pwd2"))
-//                .roles("USER","ADMIN","HR")
-//                .build();
-//        return new InMemoryUserDetailsManager(admin, user);
         return new CustomUserDetailsService();
     }
 
@@ -37,7 +28,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/user/{id}", "/user/readFile/{serial}/{urlKey}", "/user/create").permitAll()
+                .requestMatchers("/Bitel_Project/readFileController/v1/readFile/{serial}/{urlKey}").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/user/**")
                 .authenticated().and().formLogin().and().build();

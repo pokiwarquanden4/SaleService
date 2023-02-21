@@ -8,7 +8,6 @@ import java.io.InputStream;
 import com.example.saleservice.config.ConfigUtils;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
