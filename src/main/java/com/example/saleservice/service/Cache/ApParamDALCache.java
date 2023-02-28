@@ -16,6 +16,5 @@ public class ApParamDALCache extends ApParamDAL{
             return dbValue;
         }
         return cacheValue;
-
     }
 }

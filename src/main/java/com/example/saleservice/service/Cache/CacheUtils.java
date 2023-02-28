@@ -30,7 +30,7 @@ public class CacheUtils {
             for (Map.Entry<Object, Timestamp> innerEntry : innerMap.entrySet()) {
                 Object value = innerEntry.getKey();
                 Timestamp innerTimestamp = innerEntry.getValue();
-                if(timestamp.getTime() - innerTimestamp.getTime() > 90000){
+                if(checkDifferent(timestamp, innerTimestamp)){
                     configCache.remove(key);
                     return null;
                 }else {
@@ -53,38 +53,39 @@ public class CacheUtils {
         }
     }
 
-
-
     public void removeCache(ArrayList<String> removeList){
+        System.out.println("RemoveList: " + removeList);
         for (String removeKey: removeList){
             configCache.remove(removeKey);
         }
     }
 
-//    @Scheduled(fixedDelay = 60000L)
-//    void handleExpired(){
-//        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-//        ArrayList<String> newRemoveList = new ArrayList<>();
-//        for (Map.Entry<String, Map<String, Timestamp>> entry : configCache.entrySet()) {
-//            String key = entry.getKey();
-//            Map<String, Timestamp> innerMap = entry.getValue();
-//            for (Map.Entry<String, Timestamp> innerEntry : innerMap.entrySet()) {
-//                Timestamp innerValue = innerEntry.getValue();
-//                if(checkDifferent(timestamp, innerValue)){
-//                    newRemoveList.add(key);
-//                }
-//            }
-//        }
-//        removeCache(newRemoveList);
-//    }
-//
-//    public boolean checkDifferent(Timestamp timestamp, Timestamp now){
-//        Long different = ((timestamp.getTime() - now.getTime()));
-//        if(different > 30000l){
-//            return true;
-//        }else {
-//            return false;
-//        }
-//    }
+    //Kiểm tra mỗi 15p loại bỏ key đã hết hạn
+    @Scheduled(fixedDelay = 900000l)
+    void handleExpired(){
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        ArrayList<String> newRemoveList = new ArrayList<>();
+        for (Map.Entry<String, Map<Object, Timestamp>> entry : configCache.entrySet()) {
+            String key = entry.getKey();
+            Map<Object, Timestamp> innerMap = entry.getValue();
+            for (Map.Entry<Object, Timestamp> innerEntry : innerMap.entrySet()) {
+                Timestamp innerTimestamp = innerEntry.getValue();
+                if(checkDifferent(timestamp, innerTimestamp)){
+                    newRemoveList.add(key);
+                }
+            }
+        }
+        removeCache(newRemoveList);
+    }
+
+    public static boolean checkDifferent(Timestamp timestamp, Timestamp now){
+        Long different = ((timestamp.getTime() - now.getTime()));
+        //Hết hạn sau 5 phút
+        if(different > 300000l){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }
 
